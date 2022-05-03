@@ -1,0 +1,29 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<!-- <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
+<suite name="EQA_UI_ORDERING_V2">
+
+	<listeners>
+		<listener class-name="com.ge.capital.rainbow.testng.PDFReporter"/>
+		<listener class-name="com.element.fleet.ordering.commonutility.TestListener" />
+	</listeners>
+	
+	<parameter name="waitTime" value="30" />
+	<parameter name="thinkTime" value="2" />
+	<parameter name="browser" value="chrome" />
+	<parameter name="applicationURL" value="https://ordering.qa.elementfleet.com/login" />
+	<parameter name="applicationBOURL" value="https://ordering-backoffice.qa.fleet.ad/" />
+	<parameter name="username" value="AtestSupr" />
+	<parameter name="reportDetailLevel" value="107" />
+	<parameter name="makeScreenshots" value="true" />
+	<parameter name="reportName" value="Reg_PriceandConfig_Spec_Workflow_Test_BO" />
+	<parameter name="testDescription" value="Reg_PriceandConfig_Spec_Workflow_Test_BO" />
+	<parameter name="orderingTestDataFilePath" value="/src/test/resources/TestData/OrderingTestData.yaml" />
+	<parameter name="orderingCredentialDataFilePath" value="/src/test/resources/TestData/OrderingCredentials.csv" />
+
+	<test name="Reg_PriceandConfig_Spec_Workflow_Test_BO" preserve-order="true" annotations="JDK" verbose="10">
+		<classes>
+			<class name="com.element.fleet.ordering.regression.Reg_PriceandConfig_Spec_Workflow_Test_BO" />
+		</classes>
+	</test>	
+
+</suite>

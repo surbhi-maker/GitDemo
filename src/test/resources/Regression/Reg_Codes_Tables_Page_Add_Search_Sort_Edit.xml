@@ -1,0 +1,30 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<!-- <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
+<suite name="EQA_UI_ORDERING_V2">
+
+	<listeners>
+		<listener class-name="com.ge.capital.rainbow.testng.PDFReporter"/>
+		<listener class-name="com.element.fleet.ordering.commonutility.TestListener" />
+	</listeners>
+	
+	<parameter name="waitTime" value="60" />
+	<parameter name="thinkTime" value="2" />
+	<parameter name="browser" value="chrome" />
+	<parameter name="xcelerateURL" value="https://xcelerate2.qa.elementfleet.com/web/common/doLogin" />
+	<parameter name="applicationURL" value="https://ordering.qa.elementfleet.com/login" />
+	<parameter name="applicationBOURL" value="https://ordering-backoffice.qa.fleet.ad/login" />
+	<parameter name="username" value="AtestSupr" />
+	<parameter name="reportDetailLevel" value="107" />
+	<parameter name="makeScreenshots" value="true" />
+	<parameter name="reportName" value="Reg_Codes_Tables_Page_Add_Search_Sort_Edit" />
+	<parameter name="testDescription" value="Reg_Codes_Tables_Page_Add_Search_Sort_Edit" />
+	<parameter name="orderingTestDataFilePath" value="/src/test/resources/Regression/TestData/OrderingTestData.csv" />
+	<parameter name="orderingCredentialDataFilePath" value="/src/test/resources/Regression/TestData/OrderingCredentials.csv" />
+
+	<test name="Reg_Codes_Tables_Page_Add_Search_Sort_Edit" preserve-order="true" annotations="JDK" verbose="10">
+		<classes>
+			<class name="com.element.fleet.ordering.regression.Reg_Codes_Tables_Page_Add_Search_Sort_Edit" />
+		</classes>
+	</test>
+
+</suite>

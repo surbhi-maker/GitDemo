@@ -1,0 +1,36 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<!-- <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
+<suite name="EQA_UI_ORDERING_V2"> 
+
+	<listeners>
+		<listener class-name="com.ge.capital.rainbow.testng.PDFReporter"/>
+		<listener class-name="com.element.fleet.ordering.commonutility.TestListener" />
+	</listeners>
+	
+	<parameter name="waitTime" value="20" />
+	<parameter name="thinkTime" value="2" />
+	<parameter name="browser" value="chrome" />
+	<parameter name="startMainframeBefore" value="test" />
+	<parameter name="hostName" value="161.178.87.1" />
+	<parameter name="portNo" value="23"/>
+	<parameter name="xcelerateURL" value="https://xcelerate2.qa.elementfleet.com/web/common/doLogin" />
+	<parameter name="applicationURL" value="https://ordering.qa.elementfleet.com/login" />
+	<parameter name="applicationBOURL" value="https://ordering-backoffice.qa.fleet.ad/login" />
+	<parameter name="username" value="AtestSupr" />
+	<parameter name="MFUsername" value="#PAVR" />
+	<parameter name="reportDetailLevel" value="107" />
+	<parameter name="makeScreenshots" value="true" />
+	<parameter name="reportName" value="Reg_MF_Status_Upfit_Add_Remove_Stock_Order" />
+	<parameter name="testDescription" value="Reg_MF_Status_Upfit_Add_Remove_Stock_Order"/>
+	<parameter name="orderingTestDataFilePath" value="/src/test/resources/TestData/OrderingTestData.yaml" />
+	<parameter name="orderingCredentialDataFilePath" value="/src/test/resources/TestData/OrderingCredentials.csv" />
+
+	<test name="Reg_MF_Status_Upfit_Add_Remove_Stock_Order" preserve-order="true" annotations="JDK" verbose="10">
+		<classes>
+			<class name="com.element.fleet.ordering.regression.Reg_MF_Status_Upfit_Add_Remove_Stock_Order" />
+			<class name="com.element.fleet.ordering.regression.Reg_MF_Status_Upfit_Add_Remove_Stock_Order$mf"/>
+			<class name="com.element.fleet.ordering.regression.Reg_MF_Status_Upfit_Add_Remove_Stock_Order$backOffcCancelOrder"/>
+		</classes>
+	</test>
+
+</suite>

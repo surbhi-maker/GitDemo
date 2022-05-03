@@ -1,0 +1,15 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<!-- <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
+<suite name="EQA_UI_ORDERING_V2">
+
+	<parameter name="profileFolderLocation" value="C:" />
+	<parameter name="chromeBrowserLoc" value="C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe" />
+	<parameter name="port" value="8082" />
+
+	<test name="ChromeDebugModeStart" preserve-order="true" annotations="JDK" verbose="10">
+		<classes>
+			<class name="com.element.fleet.ordering.debug.ChromeDebugModeStart" />
+		</classes>
+	</test>	
+
+</suite>

@@ -1,0 +1,32 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<!-- <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
+<suite name="EQA_UI_ORDERING_V2">
+
+	<listeners>
+		<listener class-name="com.ge.capital.rainbow.testng.PDFReporter"/>
+		<listener class-name="com.element.fleet.ordering.commonutility.TestListener" />
+	</listeners>
+
+	<parameter name="waitTime" value="60" />
+	<parameter name="thinkTime" value="2" />
+	<parameter name="browser" value="chrome" />
+	<parameter name="xcelerateURL" value="https://xcelerate2.qa.elementfleet.com/web/common/doLogin" />
+	<parameter name="applicationURL" value="http://vsplordws04d:8200/login" />
+	<parameter name="applicationBOURL" value="http://vsplordws04d:8300/login" />
+	<parameter name="username" value="orddevint1" />
+	<parameter name="reportDetailLevel" value="107" />
+	<parameter name="makeScreenshots" value="true" />
+	<parameter name="reportName" value="Regression_EditOrder_AddUpfitPurchaseOrder" />
+	<parameter name="testDescription" value="Regression_EditOrder_AddUpfitPurchaseOrder" />
+	<parameter name="OrderingDataFilePath" value="/resources/OrderingTestData.xlsx" />
+	<parameter name="prelimFinalOutput"	value ="/resources/prelimFinalOpSheet.xlsx"/>
+	<parameter name="CredentialFileSheetname" value="CredentialData" />
+	<parameter name="PrelimTests" value="PrelimTests" />
+	
+	<test name="Regression" preserve-order="true" annotations="JDK" verbose="10">
+		<classes>
+			<class name="com.element.fleet.ordering.test.Regression_EditOrder_AddUpfitPurchaseOrder" />
+		</classes>
+	</test>	
+	
+</suite>

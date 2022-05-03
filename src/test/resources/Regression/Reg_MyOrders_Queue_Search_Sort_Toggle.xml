@@ -1,0 +1,30 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> -->
+<suite name="EQA_UI_ORDERING_V2">
+
+	<listeners>
+		<listener class-name="com.ge.capital.rainbow.testng.PDFReporter"/>
+		<listener class-name="com.element.fleet.ordering.commonutility.TestListener" />
+	</listeners>
+
+	<parameter name="waitTime" value="20" />
+	<parameter name="thinkTime" value="2" />
+	<parameter name="browser" value="chrome" />
+	<parameter name="xcelerateURL" value="https://xcelerate2.qa.elementfleet.com/web/common/doLogin" />
+	<parameter name="applicationURL" value="https://ordering.qa.elementfleet.com/login" />
+	<parameter name="applicationBOURL" value="https://ordering-backoffice.qa.fleet.ad/login" />
+	<parameter name="username" value="AtestSupr" />
+	<parameter name="reportDetailLevel" value="107" />
+	<parameter name="makeScreenshots" value="true" />
+	<parameter name="reportName" value="Reg_MyOrders_Queue_Search_Sort_Toggle" />
+	<parameter name="testDescription" value="Reg_MyOrders_Queue_Search_Sort_Toggle" />
+	<parameter name="orderingTestDataFilePath" value="/src/test/resources/TestData/OrderingTestData.yaml" />
+	<parameter name="orderingCredentialDataFilePath" value="/src/test/resources/TestData/OrderingCredentials.csv" />
+		
+	<test name="Reg_MyOrders_Queue_Search_Sort_Toggle" preserve-order="true" annotations="JDK" verbose="10">
+		<classes>
+			<class name="com.element.fleet.ordering.regression.Reg_MyOrders_Queue_Search_Sort_Toggle" />
+		</classes>
+	</test>	
+	
+</suite>

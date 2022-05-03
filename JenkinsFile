@@ -1,0 +1,153 @@
+jobsList = env.JOB_NAMES.tokenize(',')
+jobStatus = [:]
+alljobDetails = [:]
+totalCount = 0
+passCount = 0
+passPercent = 0
+failCount = 0
+failPercent = 0
+
+def parallelStagesMap = jobsList.collectEntries {
+    ["${it}" : generateStage(it)]
+}
+
+def initializeJobsDetailsMap() {
+    jobsList.collectEntries {
+    ["${it}" : alljobDetails[it]=[:]]
+    }
+}
+
+def generateStage(job) {
+    return {
+        stage("Stage: ${job}") {
+            def jobBuild = build(job: "${job}",
+            parameters: [[$class: 'StringParameterValue', name: 'browser', value: env.browser],
+            [$class: 'StringParameterValue', name: 'GIT_BRANCH', value: env.GIT_BRANCH],
+            [$class: 'StringParameterValue', name: 'username', value: env.username],
+            [$class: 'StringParameterValue', name: 'applicationURL', value: env.applicationURL],
+            [$class: 'StringParameterValue', name: 'applicationBOURL', value: env.applicationBOURL]],
+            propagate: false)
+            def jobDetails = [:]
+            jobDetails["JOB_NAME"] = "${job}"
+            echo jobDetails["JOB_NAME"]
+            jobDetails["BUILD_NUMBER"] = jobBuild.number.toString()
+            echo jobDetails["BUILD_NUMBER"]
+            jobDetails["JOB_STATUS"] = jobBuild.getResult()=='SUCCESS'?'PASS':'FAIL'
+            jobDetails["JOB_STATUS"] == 'PASS'?++passCount:++failCount
+            echo jobDetails["JOB_STATUS"]
+            jobDetails["BUILD_URL"] = jobBuild.getAbsoluteUrl()
+            echo jobDetails["BUILD_URL"]
+            alljobDetails["${job}"] = jobDetails
+        }
+    }
+}
+
+@NonCPS
+def generateHTMLEmailReport() {
+    def starthtml = """
+                    <html>
+                    """
+    def scripthtml =    """
+                        <head>
+                            <style>
+                                #report {
+                                    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                                    border-collapse: collapse;
+                                }
+                                #report td, #report th {
+                                    border: 1px solid #ddd;
+                                    padding: 8px;
+                                }
+                                #report tr:nth-child(even){background-color: #f2f2f2;}
+		                        #report tr:hover {background-color: #ddd;}
+		                        #report th {
+                                    padding-top: 12px;
+                                    padding-bottom: 12px;
+                                    text-align: center;
+                                    background-color: #4CAF50;
+                                    color: white;
+                                }
+                            </style>
+                        <head>
+                        """
+    def bodyhtml =  """
+                    <body>
+		                <p id='report'>Hello All,<br><br><br>Please find below results of automation execution.</p>
+		                <p id='report'><u><b>Automation environment details:</b></u></p>
+		                <table id='report'>
+			                <tr><td><b>Test Run</td><td>Daily Execution</td></tr>
+			                <tr><td><b>Environment</td><td>Stage</td></tr>
+			                <tr><td><b>Application FO URL</td><td>${env.applicationURL}</td></tr>
+			                <tr><td><b>Application BO URL</td><td>${env.applicationBOURL}</td></tr>
+			                <tr><td><b>UserId</td><td>${env.username}</td></tr>
+			                <tr><td><b>Browser</td><td>${env.browser}</td></tr>
+		                </table>
+		                <br>
+		                <p id='report'><u><b>Overall automation report:</b></u></p>
+		                <table id='report'>
+                			<tr>
+                				<th><b>#</th>
+                				<th><b>Count</th>
+                				<th><b>Percentage</th>
+                			</tr>
+                			<tr><td>Pass</td><td align='center'>${passCount}</td><td align='center'>${passPercent}%</td></tr>
+                			<tr><td>Fail</td><td align='center'>${failCount}</td><td align='center'>${failPercent}%</td></tr>
+                			<tr><td>Total</td><td align='center'>${totalCount}</td><td align='center'>-</td></tr>
+			            </table>
+		                <br>
+		                <p id='report'>Below is the job execution status:</p>
+		                <table id='report'>
+			                <tr>
+				                <th><b>Job Name</th>
+				                <th><b>Build Number</th>
+				                <th><b>Job Status</th>
+			                </tr>
+                    """
+    def rowhtml = ""
+    def endhtml =   """
+                            </table>
+                            <p id='report'><br>Regards,<br>QA Jenkins</p>
+                        </body>
+                    </html>
+                    """
+    alljobDetails.each{ k, v -> rowhtml = rowhtml + "<tr><td>${v['JOB_NAME']}</td><td align='center'><a href='${v['BUILD_URL']}'>${v['BUILD_NUMBER']}</a></td><td align='center'><a href='${v['BUILD_URL']}/artifact/target/${v['JOB_NAME']}.pdf'>${v['JOB_STATUS']}</a></td></tr>" }
+    return starthtml + scripthtml + bodyhtml + rowhtml + endhtml
+}
+
+pipeline {
+    agent any
+    stages {
+        stage('Initialize Job Map') {
+            agent { label 'windows' }
+            steps {
+                script {
+                    initializeJobsDetailsMap()
+                }
+            }
+        }
+        stage('Parallel Stage') {
+            agent { label 'windows' }
+            steps {
+                script {
+                    parallel parallelStagesMap
+                    totalCount = passCount + failCount
+                    passPercent = (passCount/totalCount)*100
+                    failPercent = (failCount/totalCount)*100
+                }
+            }
+        }
+        stage('Report Stage') {
+            agent { label 'windows' }
+            steps {
+                script {
+                    stage('Email Report Stage') {
+                        emailext mimeType: 'text/html',
+                        body: generateHTMLEmailReport(),
+                        subject: "AUTOMATION EXECUTION REPORT",
+                        to: "vnagaraj@elementcorp.com,ShiSingh@elementcorp.com,AKandkonde@elementcorp.com,MKaricharla@elementcorp.com,SSrivastava@elementcorp.com,PDhole@elementcorp.com,MPadha@elementcorp.com,ALakras@elementcorp.com,CSaraf@elementcorp.com"
+                    }
+                }
+            }
+        }
+    }
+}

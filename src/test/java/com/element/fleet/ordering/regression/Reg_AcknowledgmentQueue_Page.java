@@ -119,6 +119,7 @@ public class Reg_AcknowledgmentQueue_Page extends BaseWebDriver {
 	@Documentation(step = "Test ended", expected = "Test ended")
 	public void testEnded() throws Exception {
 		CommonPage.testEnded();
+		CommonPage.testEnded();
 	}
 	
 }
